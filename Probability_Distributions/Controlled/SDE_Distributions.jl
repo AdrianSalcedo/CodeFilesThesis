@@ -4,6 +4,18 @@ using DifferentialEquations.EnsembleAnalysis
 using CSV, StatsPlots, Random
 using DataFrames
 using StochasticDiffEq
+path2 = "C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/Trayectorias/"
+Tiempo = CSV.read(path2 * "simulatedTrajectorytimes.csv",DataFrame)
+#States = CSV.read(path1 * "simulatedTrajectory.csv",DataFrame)
+Tiempo = Matrix(Tiempo)
+States = Matrix(States)
+Datos = zeros(size(Tiempo)[1],101)
+Datos[:,1] .= Tiempo
+for i in 1:100
+    path1 = "C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/Trayectorias/T-$i/trajectory/"
+    States = CSV.read(path1 * "simulatedTrajectory.csv",DataFrame)
+    Datos[:,i+1] .= States[:,3]
+end
 
 path = "D:/CodeFilesThesis/Probability_Distributions/Controlled/"
 
@@ -16,26 +28,26 @@ control = CSV.read(path * "Controls.csv", DataFrame)
 ################################################################################
 ################################# Parameters ###################################
 ################################################################################
-beta_p = 0.1
-r_1 = 0.01
-r_2 = 0.01
-b = 0.075
-beta_v = 0.01
-theta = 0.4
-mu = 1.0
-gamma = 0.03
-gamma_f = 0.03
-sigma_L = 0.1118417
-sigma_I = 0.990762
-sigma_v = 0.652238
+# beta_p = 0.1
+# r_1 = 0.01
+# r_2 = 0.01
+# b = 0.075
+# beta_v = 0.01
+# theta = 0.4
+# mu = 1.0
+# gamma = 0.03
+# gamma_f = 0.03
+# sigma_L = 0.1118417
+# sigma_I = 0.990762
+# sigma_v = 0.652238
 
 t_init = 0
-t_end  = 70
-N      = 140  # number of ime steps
+t_end  = 20
+N      = 200 # number of time steps
 dt     = float(t_end - t_init) / N # time step
-y_init = [650.0,250.0,100.0,300.0,200.0]
-Np = y_init[1] + y_init[2]+ y_init[3]
-tol = 1e-08
+# y_init = [650.0,250.0,100.0,300.0,200.0]
+# Np = y_init[1] + y_init[2]+ y_init[3]
+# tol = 1e-08
 
 scale = 1.0
 step_size = dt
@@ -77,19 +89,21 @@ println("Rs0=",Rs0);
 # ####################################################################################
 # ###########################   Parallel   Ensamble   ################################
 # ####################################################################################
-Datos = EulerMaruyama(10000)
+#Datos = EulerMaruyama(10000)
 ########################## Here we compute Probability Laws ####################
 t_s = range(0.0,T, step=dt)
 time = DataFrame(t = t_s)
 Nrow = size(Datos)[1]
 t_steps = size(time)[1]
 Ncol = Int(size(Datos)[1]/t_steps)
-
-for i in 2:6
-    Datos_State = reshape(Datos[:,i-1],t_steps,Ncol)
-    Datos_State = DataFrame(Datos_State, :auto)
-    Datos_State = hcat(time,Datos_State)
+##
+Datos_State = DataFrame(Datos,:auto)
+i=4
+#for i in 2:6
+    #Datos_State = reshape(Datos[:,i-1],t_steps,Ncol)
+    #Datos_State = DataFrame(Datos_State, :auto)
+    #Datos_State = hcat(time,Datos_State)
     CSV.write(path * "DataState$(i-1).csv",Datos_State)
-    ProbabilityLaw(141,Matrix(Datos_State[:,2:end]),i,"State$(i-1)")
+    ProbabilityLaw(201,Matrix(Datos_State),i,"State$(i-1)")
     TrajectoriesPlot(Matrix(Datos_State),i,"Time (Days)","State $(i-1)")
-end
+#end

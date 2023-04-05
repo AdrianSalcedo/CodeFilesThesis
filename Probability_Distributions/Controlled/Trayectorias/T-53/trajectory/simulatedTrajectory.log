@@ -1,0 +1,34 @@
+**************************** 
+*****    DEFINITION    ***** 
+**************************** 
+
+# This file defines all dimensions and parameters for your problem: 
+# Dimensions:
+state.dimension 5
+control.dimension 3
+constant.dimension 12
+brownian.dimension 2
+
+# Variable Names :
+state.0 Sp
+state.1 Lp
+state.2 Ip
+state.3 Sv
+
+
+
+***************************** 
+*** TRAJECTORY SIMULATION *** 
+***************************** 
+
+Objective value (from value function): 1.98165e+019 and simulated: 5.39233
+(running cost: 5.39233, switching cost: 0 and final cost: 0)
+
+grad(V)(x0,t0) estimations
+Centered: 0
+Downwind: 0
+Upwind  : 0
+
+Time spent to simulate optimal trajectory: 12.764 s
+Time spent to save the trajectory: 0.0210001 s
+
