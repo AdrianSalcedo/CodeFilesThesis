@@ -1,0 +1,4 @@
+/home/gabrielsalcedo/Bocop-2.2.1-linux/TomatoSystemControl/build/CMakeFiles/rebuild_cache.dir
+/home/gabrielsalcedo/Bocop-2.2.1-linux/TomatoSystemControl/build/CMakeFiles/edit_cache.dir
+/home/gabrielsalcedo/Bocop-2.2.1-linux/TomatoSystemControl/build/CMakeFiles/bocop.dir
+/home/gabrielsalcedo/Bocop-2.2.1-linux/TomatoSystemControl/build/CMakeFiles/CORE.dir

@@ -1,0 +1,4 @@
+C:/Users/Usuario1/Desktop/Carpeta/COVID-19-Bocop/build/CMakeFiles/CORE.dir
+C:/Users/Usuario1/Desktop/Carpeta/COVID-19-Bocop/build/CMakeFiles/edit_cache.dir
+C:/Users/Usuario1/Desktop/Carpeta/COVID-19-Bocop/build/CMakeFiles/bocop.dir
+C:/Users/Usuario1/Desktop/Carpeta/COVID-19-Bocop/build/CMakeFiles/rebuild_cache.dir

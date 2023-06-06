@@ -12,20 +12,20 @@ library(rainbow)
 library(pcaPP)
 library(RCurl)
 
-df<-as.matrix(read.csv("simulatedTrajectory_2.csv",header = F))
+df<-as.matrix(read.csv("simulatedTrajectory.csv",header = T))
 T = 70
 N = length(df[,1])-1
 dt = T/N
 
-y_init = df[1,1:5]
+y_init = df[1,2:6]
 
 beta_p = 0.1
 r_1 = 0.01
 r_2 = 0.01
 b = 0.075
 beta_v = 0.01
-gamma = 0.06
-gamma_f = 0
+gamma = 0.03
+gamma_f = 0.03
 theta = 0.4
 mu = 1.0
 sigma_L= 0.118417
@@ -83,14 +83,14 @@ return(rhs_s_np_array)
 }
 
 
-Bt_1 = df[,6]#brownian_path_sampler(dt,N) #generating the path
-Bt_2 = df[,7]#brownian_path_sampler(dt,N)
+Bt_1 = df[,7]#brownian_path_sampler(dt,N) #generating the path
+Bt_2 = df[,8]#brownian_path_sampler(dt,N)
   dB_1 = diff(Bt_1)
   dB_2 = diff(Bt_2)
 
 dB = matrix(0,2,N+1)
-dB[1,2:501] = dB_1
-dB[2,2:501] = dB_2
+dB[1,2:length(df[,1])] = dB_1
+dB[2,2:length(df[,1])] = dB_2
 
 ts = seq(0, T, length.out = N+1)
 ys = matrix(0,5,N+1)
@@ -107,9 +107,12 @@ ys[,1] = y_init
 ggplot() + 
   geom_line(aes(ts, ys[1,], colour=g1), ys) + 
   geom_line(aes(ts, df[,1], colour=g2), df)
-plot(ts, ys[3,], type = "l", lty = 1) + plot(ts,df[,3],type = "l", lty = 1)
+plot(ts, ys[3,], type = "l", lty = 1) + plot(df[,1],df[,4],type = "l", lty = 1)
 
 matplot(ys[,], type = "l", lwd=1)
+data_ys <- t(ys)
+write.csv(data_ys, "No_controlSDE1.csv")
+
 
 
 

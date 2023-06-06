@@ -1,0 +1,4 @@
+C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/build/CMakeFiles/bocophjbcore.dir
+C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/build/CMakeFiles/bocophjb.dir
+C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/build/CMakeFiles/edit_cache.dir
+C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/build/CMakeFiles/rebuild_cache.dir

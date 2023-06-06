@@ -1,0 +1,100 @@
+# This file defines all dimensions and parameters
+# values for your problem :
+
+# Initial and final time :
+time.free string none
+time.initial double 0
+time.final double 365
+
+# Dimensions :
+state.dimension integer 12
+control.dimension integer 2
+algebraic.dimension integer 0
+parameter.dimension integer 0
+constant.dimension integer 25
+boundarycond.dimension integer 13
+constraint.dimension integer 0
+
+# Discretization :
+discretization.steps integer 2000
+discretization.method string gauss
+
+# Optimization :
+optimization.type string single
+batch.type integer 0
+batch.index integer 0
+batch.nrange integer 1
+batch.lowerbound double 0
+batch.upperbound double 0
+batch.directory string none
+
+# Initialization :
+initialization.type string from_init_file
+initialization.file string none
+
+# Parameter identification :
+paramid.type string false
+paramid.separator string ,
+paramid.file string no_directory
+paramid.dimension integer 0
+
+# Names :
+state.0 string L
+state.1 string S
+state.2 string E
+state.3 string I_S
+state.4 string I_A
+state.5 string H
+state.6 string R
+state.7 string D
+state.8 string V
+state.9 string J
+state.10 string X_vacc
+state.11 string Y_count
+control.0 string u_L
+control.1 string u_V
+boundarycond.0 string L_0
+boundarycond.1 string S_0
+boundarycond.2 string E_0
+boundarycond.3 string I_S_0
+boundarycond.4 string I_A_0
+boundarycond.5 string H_0
+boundarycond.6 string R_0
+boundarycond.7 string D_0
+boundarycond.8 string V_0
+boundarycond.9 string J_0
+boundarycond.10 string X_vacc_0
+boundarycond.11 string Y_count_0
+boundarycond.12 string X_vaccT
+constant.0 string theta
+constant.1 string mu
+constant.2 string N
+constant.3 string epsilon
+constant.4 string delta_L
+constant.5 string delta_V
+constant.6 string delta_R
+constant.7 string lambda_V
+constant.8 string varepsilon
+constant.9 string kappa
+constant.10 string p
+constant.11 string gamma_S
+constant.12 string mu_I_S
+constant.13 string delta_H
+constant.14 string gamma_A
+constant.15 string gamma_H
+constant.16 string mu_H
+constant.17 string a_S
+constant.18 string a_H
+constant.19 string a_D
+constant.20 string c_L
+constant.21 string c_V
+constant.22 string beta_S
+constant.23 string beta_A
+constant.24 string B
+
+# Solution file :
+solution.file string Solution
+
+# Iteration output frequency :
+iteration.output.frequency integer 0
+

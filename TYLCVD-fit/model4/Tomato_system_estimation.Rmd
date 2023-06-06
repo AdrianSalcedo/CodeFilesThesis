@@ -1,0 +1,88 @@
+---
+title: "Tomato Model"
+author: "GAbriel A. Salcedo-Varela"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+  rmdformats::material:
+    self_contained: yes
+    thumbnails: yes
+    lightbox: yes
+    gallery: no
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Base Model
+=================================
+\begin{align}
+    S_p'& =
+        -\beta_p S_p I_v + r_1 L_p + r_2 I_p
+        \\
+    L_p'& =
+        \beta_p S_p I_v -(b + r_1) L_p
+        \\
+    I_p'& = 
+        b L_p - r_2 I_p
+        \\
+    S_v'&= 
+        -\beta_v S_v I_p - (\gamma + \gamma_f) S_v + (1 - \theta) \mu
+        \\
+    I_v'&= 
+        \beta_v S_v I_p - (\gamma + \gamma_f) I_v +\theta \mu
+        \\
+    N_p(t)&= 
+        S_p + L_p + I_p
+\end{align}
+
+Stan ODE notation beginning model
+=================================
+
+|state                  |Stan| Initial Condition       |Stan     |Postulated |
+|-----------------------|----|-------------------------|---------|-----------|
+|$S_p$                  |y[1]| $S_{p_0}$               |y_init[1]|$N_p -
+                                                                  (L_{p_0} + 
+                                                                  I_{p_0})$  |
+|$L_p$                  |y[2]| $L_{p_0}$               |y_init[2]|-----------|
+|$I_p$                  |y[3]| $I_{p_0}$               |y_init[3]|-----------|
+|$S_v$                  |y[4]| $S_{v_0}$               |y_init[4]|-----------|
+|$I_v$                  |y[5]| $I_{v_0}$               |y_init[5]|-----------|
+|$I_p^{[cumulative]}$   |y[6]| $I_{p_0}^{[cumulative]}$|y_init[8]|-----------|
+
+Observation Model
+=================
+\begin{align}
+    Y_t &
+        \sim \text{Poisson}(\lambda_t), \qquad
+    \\
+    \lambda_t &
+        =  \int_0^t b L_p
+    \\
+    & b \sim \text{Uniform(0 1)}
+\end{align}
+
+Parameters estimation
+==========================================
+
+|stan notation| symbol     |Prior          | Fixed      |
+|-------------|---------   |---------------|------------|
+|theta[1]     |$\beta_p$   | Normal(1, 0.3)|            |
+|theta[2]     |$r_1$       | Normal(1, 0.3)|            |
+|theta[3]     |$r_2$       | Gamma(10, 100)|            |
+|theta[4]     |$b$         | Unif(0.3, 0.8)|            |
+|theta[5]     |$\beta_v$   | Gamma(10, 40) |            |
+|theta[6]     |$\gamma$    | Gamma(10, 80) |            |
+|theta[7]     |$\gamma_f$  | Gamma(10, 350)|            |
+|theta[8]     |$\theta$    | Gamma(10, 350)|            |
+|theta[9]     |$\mu$       | Gamma(10, 350)|            |
+|y_init[1]    |$S_{p_{0}}$ |  -----------  |            |
+|y_init[2]    |$L_{p_{0}}$ |  -----------  |            |
+|y_init[3]    |$I_{p_{0}}$ |  -----------  |            |
+|y_init[4]    |$S_{v_{0}}$ |  -----------  |            |
+|y_init[5]    |$S_{v_{0}}$ |  -----------  |            |
+
+

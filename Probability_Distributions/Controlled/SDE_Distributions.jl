@@ -2,19 +2,19 @@ using DifferentialEquations
 using Plots; plotly()
 using DifferentialEquations.EnsembleAnalysis
 using CSV, StatsPlots, Random
-using DataFrames
+using DataFrames, Images
 using StochasticDiffEq
 path2 = "C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/Trayectorias/"
 Tiempo = CSV.read(path2 * "simulatedTrajectorytimes.csv",DataFrame)
 #States = CSV.read(path1 * "simulatedTrajectory.csv",DataFrame)
 Tiempo = Matrix(Tiempo)
-States = Matrix(States)
-Datos = zeros(size(Tiempo)[1],101)
-Datos[:,1] .= Tiempo
-for i in 1:100
-    path1 = "C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/Trayectorias/T-$i/trajectory/"
+#States = Matrix(States)
+Datos2 = zeros(size(Tiempo)[1],1006)
+Datos2[:,1] .= Tiempo
+for i in 1:1005
+    path1 = "C:/Users/Usuario1/Desktop/BocopHJB-Tomato-adimensional/Trayectorias/T-$i/"
     States = CSV.read(path1 * "simulatedTrajectory.csv",DataFrame)
-    Datos[:,i+1] .= States[:,3]
+    Datos2[:,i+1] .= States[:,3]
 end
 
 path = "D:/CodeFilesThesis/Probability_Distributions/Controlled/"
@@ -93,17 +93,17 @@ println("Rs0=",Rs0);
 ########################## Here we compute Probability Laws ####################
 t_s = range(0.0,T, step=dt)
 time = DataFrame(t = t_s)
-Nrow = size(Datos)[1]
+Nrow = size(Datos2)[1]
 t_steps = size(time)[1]
-Ncol = Int(size(Datos)[1]/t_steps)
+Ncol = Int(size(Datos2)[1]/t_steps)
 ##
-Datos_State = DataFrame(Datos,:auto)
+Datos_State2 = DataFrame(Datos2,:auto)
 i=4
 #for i in 2:6
     #Datos_State = reshape(Datos[:,i-1],t_steps,Ncol)
     #Datos_State = DataFrame(Datos_State, :auto)
     #Datos_State = hcat(time,Datos_State)
-    CSV.write(path * "DataState$(i-1).csv",Datos_State)
-    ProbabilityLaw(201,Matrix(Datos_State),i,"State$(i-1)")
-    TrajectoriesPlot(Matrix(Datos_State),i,"Time (Days)","State $(i-1)")
+    CSV.write(path * "DataState$(i-1).csv",Datos_State2)
+    ProbabilityLaw(201,1000*Matrix(Datos_State2),i,"Ip")
+    TrajectoriesPlot(Matrix(Datos_State),i,"Time (Days)","Ip")
 #end

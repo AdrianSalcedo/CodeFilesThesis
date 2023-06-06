@@ -1,0 +1,4 @@
+C:/Users/Usuario1/Desktop/BocopHJB-Tomato/build/CMakeFiles/bocophjbcore.dir
+C:/Users/Usuario1/Desktop/BocopHJB-Tomato/build/CMakeFiles/bocophjb.dir
+C:/Users/Usuario1/Desktop/BocopHJB-Tomato/build/CMakeFiles/edit_cache.dir
+C:/Users/Usuario1/Desktop/BocopHJB-Tomato/build/CMakeFiles/rebuild_cache.dir

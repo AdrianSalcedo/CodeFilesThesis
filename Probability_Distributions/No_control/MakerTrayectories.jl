@@ -4,10 +4,10 @@ function MakerTrayectories(T,iterations)
     j = 0
     i = 1
     trajectories = 1
-    t_s = range(0.0,T, step=1.0)
+    t_s = range(0.0,T, step=0.1)
     while j <= iterations
         Ensemble_prob = EnsembleProblem(prob_sde_tomato_sys)
-        sim = solve(Ensemble_prob, SROCKC2(),dt= dt,EnsembleThreads(),trajectories=trajectories)
+        sim = solve(Ensemble_prob, EM(),dt= 0.1,EnsembleThreads(),trajectories=trajectories)
         component = componentwise_vectors_timepoint(sim,t_s) #gives all solution in time vector t_s
         component = transpose(component) #transpose to obtain any*5 data matrix
         component = vcat(component...) #to obtain shape for dataframe
@@ -26,7 +26,7 @@ function MakerTrayectories(T,iterations)
         condition2 = condition1-N_p*ones(size(condition1))
         condition3 = maximum(abs.(condition2))
         condition4 = condition3 <= tol
-        condition5 = 
+        condition5 = variables[end,3].>= 0.0
         if ((condition4 == true) && (condition6 == true))
             Datos = append!(Datos, Datos_aux) #append the data in the loop
             j+=1

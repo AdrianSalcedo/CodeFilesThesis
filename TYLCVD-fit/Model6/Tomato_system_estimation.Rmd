@@ -1,0 +1,122 @@
+---
+title: "Tomato Model"
+author: "Gabriel A. Salcedo-Varela"
+date: "`r Sys.Date()`"
+output:
+    #html_document:
+    rmdformats::readthedown:
+    # df_print: paged
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Base Model
+=================================
+\begin{align}
+    S_p'& =
+        -\beta_p S_p I_v + r_1 L_p + r_2 I_p
+        \\
+    L_p'& =
+        \beta_p S_p I_v -(b + r_1) L_p
+        \\
+    I_p'& = 
+        b L_p - r_2 I_p
+        \\
+    S_v'&= 
+        -\beta_v S_v I_p - (\gamma + \gamma_f) S_v + (1 - \theta) \mu
+        \\
+    I_v'&= 
+        \beta_v S_v I_p - (\gamma + \gamma_f) I_v +\theta \mu
+        \\
+    N_p(t)&= 
+        S_p + L_p + I_p
+\end{align}
+
+Stan ODE notation beginning model
+=================================
+
+|state                  |Stan| Initial Condition       |Stan     |Postulated |
+|-----------------------|----|-------------------------|---------|-----------|
+|$S_p$                  |y[1]| $S_{p_0}$               |y_init[1]|$N_p -
+                                                                  (L_{p_0} + 
+                                                                  I_{p_0})$     |
+|$L_p$                  |y[2]| $L_{p_0}$               |y_init[2]|L_{p_0}       |
+|$I_p$                  |y[3]| $I_{p_0}$               |y_init[3]|I_{p_0}       |
+|$S_v$                  |y[4]| $S_{v_0}$               |y_init[4]|S_{v_0}       |
+|$I_v$                  |y[5]| $I_{v_0}$               |y_init[5]|I_{v_0}       |
+|$I_p^{[cumulative]}$   |y[6]| $I_{p_0}^{[cumulative]}$|y_init[6]|Y_{p_0}       |
+
+Observation Model
+=================
+\begin{align}
+    Y_t &
+        \sim \text{Negative Binomial}(\lambda_t, \phi), \qquad
+    \\
+    \lambda_t &
+        =  \int_0^t b L_p(s)ds
+    \\
+        &   b \sim \text{Normal(0.01, 0.0001)}
+
+\end{align}
+
+Parameters estimation
+==========================================
+
+|stan notation| symbol     |Prior          | Fixed      | Range |
+|-------------|---------   |---------------|------------|------------|
+|theta[1]     |$\beta_p$   | normal(0.05,0.03)|            |(0,0.1)|
+|theta[2]     |$r_1$       | inv_gamma(2.005,0.01005)   |    0.01    |(0.0083,0.013)|
+|theta[3]     |$r_2$       | inv_gamma(2.005,0.01005)   |    0.01    |(0.0083,0.013)|
+|theta[4]     |$b$         | inv_gamma(3.125,0.159375)|            |(0.05,0.1) |
+|theta[5]     |$\beta_v$   | normal(0.003,0.003) |            | (0,0.2)|
+|theta[6]     |$\gamma$    | -----------   |    0.15    | (0.03,1)|
+|theta[7]     |$\gamma_f$  | -----------   |    0.15    |(0.03,1)|
+|theta[8]     |$\theta$    | normal(0.4, 0.1)|            |(0, 1)|
+|theta[9]     |$\mu$       |  -----------  |            |(0, 1)|
+|y_init[1]    |$S_{p_{0}}$ |  -----------  | $1000 - L_{p_0} + I_{p_0}$   ||
+|y_init[2]    |$L_{p_{0}}$ |  -----------  |   65        | |
+|y_init[3]    |$I_{p_{0}}$ |  -----------  |    1        | |
+|y_init[4]    |$S_{v_{0}}$ |  -----------  |    60000    | | 
+|y_init[5]    |$I_{v_{0}}$ |  -----------  |    1000     | |
+
+Stan estimation
+===============================
+```{r}
+library(knitr)
+library(kableExtra)
+#
+# sub_path_1 <- "/home/saul/sauld@cimat.mx/UNISON/Articles/NovelCovid-19"
+# sub_path_2 <- "NovelCovid19-ControlModelling/COVID19-VACINATION/r_sources"
+# sub_path_3 <- "mcmc_parameter_estimation/UNISON-UADY-Project/estimation"
+sub_path_1 <- "/home/gabrielsalcedo"
+sub_path_2 <- "Documentos/TYLCVD-fit"
+sub_path_3 <- "model3/estimation"
+file_name <- "last_est.csv"
+path <- paste(sub_path_1, sub_path_2, sub_path_3, file_name, sep = "/")
+parameters_df <- read.csv(path, header=FALSE,skip = 1)
+parameters_df <- data.frame(parameters_df)
+#
+colnames(parameters_df) <- c("theta",
+                        "mean", 
+                        'se_mean',
+                        'sd',
+                        '2.5%', '25%','50%', '75%' ,'97.5%',
+                        'n_eff',
+                        'Rhat')
+kable(parameters_df)  %>%
+  kable_styling(bootstrap_options = "striped", full_width = T)
+
+```
+Stan MODEL
+===============================
+```{r}
+library(rstan)
+writeLines(readLines("sirTomato2.stan"))
+```
